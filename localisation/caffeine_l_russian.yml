@@ -1,0 +1,45 @@
+﻿l_russian:
+
+# To refer to a event_target: just use the variable directly, like
+# [caffeine_research_planet.GetName]
+
+caffeine.leader: "§G[This.GetLeaderName]§!, commander of the §B[This.GetFleetName]§!,"
+caffeine.warning: "\n\n§P(Addons can not order ships - except moving, so the buttons below simply moves the ship to a location and notifies you when it has arrived.)§!"
+
+caffeine.1.title: "I hear snoring!"
+caffeine.1.desc: "$caffeine.leader$ is nowhere to be found! The First Mate eventually went to unlock the captains private quarters, only to find the captain sleeping. Outrageous!$caffeine.warning$"
+
+caffeine.justclose: "§MJust close this window right now§! (Default)"
+caffeine.justclose.desc: "Closes the window immediately and ignores the status of §B[This.GetFleetName]§! for 30 days.\n\nIf there are any other science vessels, they can still trigger it during this period."
+
+caffeine.explore: "§BSurvey §Y[caffeine_survey.GetName]§!"
+caffeine.explore.desc: "Move to the planet or system nearest our capital that is accessible, without hostiles (as far as we know), and not surveyed."
+
+caffeine.assist: "§BAssist Research at §Y[caffeine_research_planet.GetName]§!"
+caffeine.assist.desc: "Move to [caffeine_research_planet.GetName] (the planet with the most research laboratories, and no existing science vessel assisting), and notify me again."
+
+caffeine.scuttle: "§PScuttle the ship§!"
+caffeine.scuttle.desc: "Immediately disembark the Captain and crew, send §G[This.GetLeaderName]§! home, and demolish the ship."
+
+caffeine.ignoreship: "§RAlways ignore this ship§!"
+caffeine.ignoreship.desc: "Stop delivering coffee supplies to this ship until the end of time.\n\nThis means you will never get an idle-warning for this ship again, even across savegames."
+
+caffeine.ignoreall: "§RBurn coffee plantation§!"
+caffeine.ignoreall.desc: "Cease and desist all coffee production immediately, preventing coffee deliveries to everyone until the end of time.\n\nTurns off the addon for this game entirely, even across savegames."
+
+# Common desc
+caffeine.addon_warning: "\n\n§PSince addons can not order ships to do anything except move, you need to manually queue the survey orders now.§!\n\n§RThis fleet will be ignored by the addon for 30 days. Remember that the game unpauses immediately when you click the button. You can queue actions with the window open.§!"
+
+# ASSIST
+
+caffeine.assist.title: "Destination reached"
+caffeine.assist.text: "§B[This.GetFleetName]§! is ready to assist research at §Y[This.System.GetName]§!. Use the location button in the top right corner to go there.$caffeine.addon_warning$"
+caffeine.assist.thanks: "Thank you, I will take it from here"
+caffeine.assist.thanks.desc: "Since addons can not order ships to do anything except move, you need to manually queue the Assist Research action."
+
+# EXPLORE (survey)
+
+caffeine.explore.title: "Destination reached"
+caffeine.explore.text: "§B[This.GetFleetName]§! has reached its queued survey target at §Y[This.System.GetName]§!. Use the location button in the top right corner to go there.$caffeine.addon_warning$"
+caffeine.explore.thanks: "Thank you, I will take it from here"
+caffeine.explore.thanks.desc: "Since addons can not order ships to do anything except move, you need to manually queue the survey actions."

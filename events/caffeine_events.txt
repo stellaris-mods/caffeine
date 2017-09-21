@@ -1,0 +1,374 @@
+namespace = folkcaffeine
+
+fleet_event = {
+	id = folkcaffeine.1001
+	# TODO Randomize these
+	title = "caffeine.1.title"
+	desc = "caffeine.1.desc"
+	picture = GFX_evt_caffeine_sleeping
+
+	is_triggered_only = yes
+	location = this
+
+	immediate = {
+		owner = {
+			# Find the closest unsurveyed planet
+			# Provides: event_target:caffeine_survey (system)
+			caffeine_find_surveylocation = yes
+
+			# Find our planet with the highest research output
+			# Provides: event_target:caffeine_research_planet (planet)
+			caffeine_find_researchplanet = yes
+		}
+	}
+
+	# All buttons need to clear has_country_flag = has_caffeine_open
+	after = {
+		owner = {
+			remove_country_flag = "has_caffeine_open"
+		}
+	}
+
+	option = {
+		name = "caffeine.justclose"
+		custom_tooltip = "caffeine.justclose.desc"
+		hidden_effect = {
+			set_timed_fleet_flag = {
+				flag = "folk_auto_warned"
+				days = 30
+			}
+		}
+	}
+	option = {
+		name = "caffeine.explore"
+		custom_tooltip = "caffeine.explore.desc"
+		trigger = {
+			exists = event_target:caffeine_survey
+		}
+		hidden_effect = {
+			fleet_event = { id = folkcaffeine.1200 }
+		}
+	}
+	option = {
+		name = "caffeine.assist"
+		custom_tooltip = "caffeine.assist.desc"
+		trigger = {
+			exists = event_target:caffeine_research_planet
+			owner = {
+				# Can we even assist lulz
+				has_technology = "tech_databank_uplinks"
+			}
+		}
+		hidden_effect = {
+			fleet_event = { id = folkcaffeine.1100 }
+		}
+	}
+	option = {
+		name = "caffeine.scuttle"
+		custom_tooltip = "caffeine.scuttle.desc"
+		hidden_effect = {
+			leader = { unassign_leader = this }
+			destroy_fleet = this
+		}
+	}
+	option = {
+		name = "caffeine.ignoreship"
+		custom_tooltip = "caffeine.ignoreship.desc"
+		hidden_effect = {
+			set_fleet_flag = "caffeine_ignoreship"
+		}
+	}
+	option = {
+		name = "caffeine.ignoreall"
+		custom_tooltip = "caffeine.ignoreall.desc"
+		hidden_effect = {
+			owner = {
+				set_country_flag = "caffeine_ignorecountry"
+			}
+		}
+	}
+}
+
+# ===================================================
+# Assist
+# IDs: 1100-1199
+
+fleet_event = {
+	id = folkcaffeine.1100 # Assist
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		set_timed_fleet_flag = {
+			flag = "folk_auto_warned"
+			days = 30
+		}
+		event_target:caffeine_research_planet = {
+			set_planet_flag = "caffeine_assist"
+		}
+		queue_actions = {
+			move_to = event_target:caffeine_research_planet
+			effect = {
+				id = folkcaffeine.1099
+				fleet_event = { id = folkcaffeine.1101 }
+			}
+		}
+	}
+}
+
+# Check if we actually ended up where we wanted to.
+fleet_event = {
+	id = folkcaffeine.1101
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_timed_fleet_flag = {
+			flag = "folk_auto_warned"
+			days = 30
+		}
+		if = {
+			limit = {
+				# This doesnt exist if we are cancelled mid-FTL
+				exists = solar_system
+			}
+			solar_system = {
+				random_system_planet = {
+					limit = {
+						has_planet_flag = "caffeine_assist"
+					}
+					remove_planet_flag = "caffeine_assist"
+					save_event_target_as = caffeine_assist_location
+					root = {
+						fleet_event = { id = folkcaffeine.1102 }
+					}
+					break = yes
+				}
+			}
+		}
+		owner = {
+			every_owned_planet = {
+				limit = { has_planet_flag = "caffeine_assist" }
+				remove_planet_flag = "caffeine_assist"
+			}
+		}
+	}
+}
+
+# We can't use the previous event_target values here
+fleet_event = {
+	id = folkcaffeine.1102
+	is_triggered_only = yes
+	title = "caffeine.assist.title"
+	desc = "caffeine.assist.text"
+	picture = GFX_evt_ship_in_orbit
+	location = event_target:caffeine_assist_location
+
+	trigger = {
+		NOT = {
+			has_fleet_order = auto_explore_order
+			has_fleet_order = assist_research_order
+			has_fleet_order = collect_data_fleet_order
+			has_fleet_order = repair_ship_fleet_order
+			has_fleet_order = research_anomaly_order
+			has_fleet_order = upgrade_design_fleet_order
+			has_fleet_order = survey_planet_order
+			has_fleet_order = combat_order
+			has_fleet_order = evade_hostiles_order
+		}
+	}
+
+	option = {
+		name = "caffeine.assist.thanks"
+		custom_tooltip = "caffeine.assist.thanks.desc"
+	}
+}
+
+# ===================================================
+# Explore (Survey)
+# IDs: 1200-1299
+
+fleet_event = {
+	id = folkcaffeine.1200 # explore
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		set_timed_fleet_flag = {
+			flag = "folk_auto_warned"
+			days = 30
+		}
+		event_target:caffeine_survey = {
+			set_star_flag = "caffeine_survey_target"
+		}
+		queue_actions = {
+			move_to = event_target:caffeine_survey
+			effect = {
+				id = folkcaffeine.1199
+				fleet_event = { id = folkcaffeine.1201 }
+			}
+		}
+	}
+}
+
+# Check if we actually ended up where we wanted to.
+fleet_event = {
+	id = folkcaffeine.1201
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_timed_fleet_flag = {
+			flag = "folk_auto_warned"
+			days = 30
+		}
+		if = {
+			limit = {
+				# This doesnt exist if we are cancelled mid-FTL
+				exists = solar_system
+			}
+			solar_system = {
+				if = {
+					limit = {
+						has_star_flag = "caffeine_survey_target"
+					}
+					save_event_target_as = caffeine_survey_location
+					remove_star_flag = "caffeine_survey_target"
+					root = {
+						fleet_event = { id = folkcaffeine.1202 }
+					}
+					break = yes
+				}
+			}
+		}
+		random_system = {
+			limit = { has_star_flag = "caffeine_survey_target" }
+			remove_star_flag = "caffeine_survey_target"
+		}
+	}
+}
+
+fleet_event = {
+	id = folkcaffeine.1202
+	is_triggered_only = yes
+	title = "caffeine.explore.title"
+	desc = "caffeine.explore.text"
+	picture = GFX_evt_star_chart
+	location = event_target:caffeine_survey_location
+	trigger = {
+		NOT = {
+			has_fleet_order = auto_explore_order
+			has_fleet_order = assist_research_order
+			has_fleet_order = collect_data_fleet_order
+			has_fleet_order = repair_ship_fleet_order
+			has_fleet_order = research_anomaly_order
+			has_fleet_order = upgrade_design_fleet_order
+			has_fleet_order = survey_planet_order
+			has_fleet_order = combat_order
+			has_fleet_order = evade_hostiles_order
+		}
+	}
+	option = {
+		name = "caffeine.explore.thanks"
+		custom_tooltip = "caffeine.explore.thanks.desc"
+	}
+}
+
+# ===================================================
+# ROOT HANDLER (1000)
+# No on_action, we repeat with MTTH
+#
+
+country_event = {
+	id = folkcaffeine.1000
+	hide_window = yes
+
+	trigger = {
+		is_country_type = default
+		is_ai = no
+		NOT = {
+			has_country_flag = "has_caffeine_open"
+			has_country_flag = "caffeine_ignorecountry"
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 3
+	}
+
+	immediate = {
+		every_owned_ship = {
+			limit = {
+				exists = leader # Only if it has a scientist
+				exists = solar_system
+				is_ship_class = shipclass_science_ship
+				is_disabled = no
+				is_in_combat = no
+				NOT = {
+					solar_system = {
+						any_ship_in_system = {
+							exists = owner
+							owner = {
+								is_hostile = root
+							}
+						}
+					}
+				}
+				fleet = {
+					NOT = {
+						has_fleet_flag = "caffeine_ignoreship"
+						has_fleet_flag = "folk_auto_warned"
+						has_fleet_order = auto_explore_order
+						has_fleet_order = assist_research_order
+						has_fleet_order = collect_data_fleet_order
+						has_fleet_order = follow_order
+						has_fleet_order = move_to_system_point_order
+						has_fleet_order = rally_point_fleet_order
+						has_fleet_order = repair_ship_fleet_order
+						has_fleet_order = research_anomaly_order
+						has_fleet_order = upgrade_design_fleet_order
+						has_fleet_order = survey_planet_order
+						# Working or not?
+						has_fleet_order = combat_order
+						has_fleet_order = evade_hostiles_order
+					}
+				}
+			}
+			prev = {
+				set_country_flag = "has_caffeine_open"
+			}
+			fleet = {
+				set_timed_fleet_flag = {
+					flag = "folk_auto_warned"
+					days = 7
+				}
+				fleet_event = { id = folkcaffeine.1001 }
+			}
+		}
+	}
+}
+
+# ===================================================
+# Console commands (1-999)
+# Document these in workshop description
+#
+
+event = {
+	id = folkcaffeine.1
+	title = "Reset"
+	desc = "Ignore flags have been reset."
+	picture = GFX_evt_star_chart
+	is_triggered_only = yes
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_ai = no
+				is_country_type = default
+			}
+			remove_country_flag = caffeine_ignorecountry
+			#every_owned_fleets = {
+			#	remove_fleet_flag = caffeine_ignoreship
+			#}
+		}
+	}
+	option = {
+		name = OK
+	}
+}

@@ -1,0 +1,188 @@
+# From country scope
+# XXX We "simply" count the number of research buildings
+caffeine_find_researchplanet = {
+	set_variable = {
+		which = CaffeineCount
+		value = 0
+	}
+	set_variable = {
+		which = CaffeineHighest
+		value = 0
+	}
+	every_owned_planet = {
+		set_planet_flag = "caffeine_unchecked"
+	}
+
+	while = {
+		limit = {
+			any_owned_planet {
+				has_planet_flag = "caffeine_unchecked"
+			}
+		}
+		random_owned_planet = {
+			limit = {
+				has_planet_flag = "caffeine_unchecked"
+			}
+			if = {
+				limit = {
+					NOT = {
+						# From static_modifiers/00_static
+						# XXX This doesn't work even though it's listed in the game files
+						#has_planet_flag = assist_research
+
+						# Is there a science ship in orbit ?
+						solar_system = {
+							any_ship_in_system = {
+								is_ship_class = shipclass_science_ship
+								exists = owner
+								owner = { is_same_value = root.owner } # is it ours lollers
+								exists = leader # Does it have a scientist
+								fleet = {
+									# Is in orbit of the planet
+									exists = orbit
+									orbit = {
+										is_same_value = prevprevprevprev
+									}
+									# And it's actually assisting!
+									has_fleet_order = assist_research_order
+								}
+							}
+						}
+					}
+				}
+				every_tile = {
+					limit = {
+						has_any_science_lab = yes
+					}
+					root.owner = {
+						change_variable = {
+							which = CaffeineCount
+							value = 1 # +1
+						}
+					}
+				}
+				if = {
+					limit = {
+						# Does this planet have more research than the
+						# previously highest one?
+						root.owner = {
+							check_variable = {
+								which = CaffeineCount
+								value > CaffeineHighest
+							}
+						}
+					}
+					# Yes, it does, save it.
+					root.owner = {
+						set_variable = {
+							which = CaffeineHighest
+							value = CaffeineCount
+						}
+					}
+					save_event_target_as = caffeine_research_planet
+				}
+				# Reset research building counter
+				root.owner = {
+					set_variable = {
+						which = CaffeineCount
+						value = 0
+					}
+				}
+			}
+			# Make sure we dont loop forever
+			remove_planet_flag = "caffeine_unchecked"
+			# And then we loop with while{}
+		}
+	}
+}
+
+caffeine_find_surveylocation = {
+	# First check if there is a non-surveyed system inside our borders
+	root = { from = {
+		closest_system = {
+			limit = {
+				any_planet = {
+					is_inside_border = from
+					is_surveyed = {
+						who = from
+						status = no
+					}
+				}
+				NOT = { has_star_flag = hostile_system }
+				# No hostile ship in system
+				NOT = {
+					any_ship_in_system = {
+						exists = owner
+						owner = { is_hostile = from }
+					}
+				}
+				# Anyone doing a survey here already maybe?
+				NOT = {
+					any_ship_in_system = {
+						exists = owner
+						owner = { is_same_value = from }
+						is_ship_class = shipclass_science_ship
+						fleet = {
+							or = {
+								has_fleet_order = survey_planet_order
+								has_fleet_order = auto_explore_order
+								has_fleet_order = move_to_system_point_order
+							}
+						}
+					}
+				}
+			}
+			save_event_target_as = caffeine_survey
+		}
+	} }
+
+	if = {
+	limit = { NOT = { exists = event_target:caffeine_survey } }
+	# Find the one closest to our capital
+	capital_scope = { solar_system = {
+	closest_system = {
+		limit = {
+			# Not surveyed
+			any_planet = { is_surveyed = { who = from status = no } }
+			# Check if we can even enter
+			# XXX I dont think this check works.
+			has_access_fleet = from
+			# Not a hostile system
+			NOT = { has_star_flag = hostile_system }
+			# No hostile ship in system
+			NOT = {
+				any_ship_in_system = {
+					exists = owner
+					owner = { is_hostile = from }
+				}
+			}
+			NOT = {
+				any_country = {
+					has_closed_borders = from
+					prev = {
+						any_planet = {
+							is_inside_border = prevprev
+						}
+					}
+				}
+			}
+			# Anyone doing a survey here already maybe?
+			NOT = {
+				any_ship_in_system = {
+					exists = owner
+					owner = { is_same_value = from }
+					is_ship_class = shipclass_science_ship
+					fleet = {
+						or = {
+							has_fleet_order = survey_planet_order
+							has_fleet_order = auto_explore_order
+							has_fleet_order = move_to_system_point_order
+						}
+					}
+				}
+			}
+		}
+		save_event_target_as = caffeine_survey
+	}
+	} } }
+}

@@ -1,0 +1,18 @@
+has_any_science_lab = {
+	or = {
+		has_building = "building_basic_science_lab_1"
+		has_building = "building_physics_lab_1"
+		has_building = "building_physics_lab_2"
+		has_building = "building_physics_lab_3"
+		has_building = "building_physics_lab_4"
+		has_building = "building_biolab_1"
+		has_building = "building_biolab_2"
+		has_building = "building_biolab_3"
+		has_building = "building_biolab_4"
+		has_building = "building_engineering_facility_1"
+		has_building = "building_engineering_facility_2"
+		has_building = "building_engineering_facility_3"
+		has_building = "building_engineering_facility_4"
+		# XXX Add in buildings from NSC and other common ones
+	}
+}

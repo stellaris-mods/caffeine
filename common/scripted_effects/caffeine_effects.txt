@@ -26,10 +26,6 @@ caffeine_find_researchplanet = {
 			if = {
 				limit = {
 					NOT = {
-						# From static_modifiers/00_static
-						# XXX This doesn't work even though it's listed in the game files
-						#has_planet_flag = assist_research
-
 						# Is there a science ship in orbit ?
 						solar_system = {
 							any_ship_in_system = {

@@ -1,0 +1,8 @@
+# A ship has started a new order
+# Root = Ship
+# From = Country
+on_ship_order = {
+	events = {
+		folkcaffeine.2000
+	}
+}

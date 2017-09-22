@@ -12,6 +12,8 @@ fleet_event = {
 
 	immediate = {
 		owner = {
+			set_country_flag = "has_caffeine_open"
+
 			# Find the closest unsurveyed planet
 			# Provides: event_target:caffeine_survey (system)
 			caffeine_find_surveylocation = yes
@@ -163,7 +165,7 @@ fleet_event = {
 	location = event_target:caffeine_assist_location
 
 	trigger = {
-		NOT = {
+		NOR = {
 			has_fleet_order = auto_explore_order
 			has_fleet_order = assist_research_order
 			has_fleet_order = collect_data_fleet_order
@@ -252,7 +254,7 @@ fleet_event = {
 	picture = GFX_evt_star_chart
 	location = event_target:caffeine_survey_location
 	trigger = {
-		NOT = {
+		NOR = {
 			has_fleet_order = auto_explore_order
 			has_fleet_order = assist_research_order
 			has_fleet_order = collect_data_fleet_order
@@ -282,7 +284,7 @@ country_event = {
 	trigger = {
 		is_country_type = default
 		is_ai = no
-		NOT = {
+		NOR = {
 			has_country_flag = "has_caffeine_open"
 			has_country_flag = "caffeine_ignorecountry"
 		}
@@ -293,13 +295,14 @@ country_event = {
 	}
 
 	immediate = {
-		every_owned_ship = {
+		random_owned_ship = {
 			limit = {
 				exists = leader # Only if it has a scientist
 				exists = solar_system
 				is_ship_class = shipclass_science_ship
 				is_disabled = no
 				is_in_combat = no
+				is_being_repaired = no
 				NOT = {
 					solar_system = {
 						any_ship_in_system = {
@@ -311,7 +314,7 @@ country_event = {
 					}
 				}
 				fleet = {
-					NOT = {
+					NOR = {
 						has_fleet_flag = "caffeine_ignoreship"
 						has_fleet_flag = "folk_auto_warned"
 						has_fleet_order = auto_explore_order
@@ -329,9 +332,6 @@ country_event = {
 						has_fleet_order = evade_hostiles_order
 					}
 				}
-			}
-			prev = {
-				set_country_flag = "has_caffeine_open"
 			}
 			fleet = {
 				set_timed_fleet_flag = {

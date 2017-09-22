@@ -4,7 +4,7 @@ return {
 	name = "Caffeine (no zzz science ships)",
 	tags = { "Gameplay" },
 	picture = "thumb.png",
-	supported_version = "1.6.*",
+	supported_version = "1.8.*",
 	remote_file_id = 790840932,
 	readme = "readme.md",
 	steambb = "steam.bbcode",

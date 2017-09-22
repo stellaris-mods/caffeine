@@ -98,11 +98,11 @@ caffeine_find_researchplanet = {
 
 caffeine_find_surveylocation = {
 	# First check if there is a non-surveyed system inside our borders
-	root = { from = {
+	prev = { # fleet
 		closest_system = {
 			limit = {
+				is_within_borders_of = from
 				any_planet = {
-					is_inside_border = from
 					is_surveyed = {
 						who = from
 						status = no
@@ -134,12 +134,12 @@ caffeine_find_surveylocation = {
 			}
 			save_event_target_as = caffeine_survey
 		}
-	} }
+	}
 
 	if = {
 	limit = { NOT = { exists = event_target:caffeine_survey } }
 	# Find the one closest to our capital
-	capital_scope = { solar_system = {
+	capital_scope = {
 	closest_system = {
 		limit = {
 			# Not surveyed
@@ -184,5 +184,5 @@ caffeine_find_surveylocation = {
 		}
 		save_event_target_as = caffeine_survey
 	}
-	} } }
+	} }
 }

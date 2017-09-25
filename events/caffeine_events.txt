@@ -47,6 +47,14 @@ fleet_event = {
 		}
 	}
 	option = {
+		name = "caffeine.explore.nolocation"
+		custom_tooltip = "caffeine.explore.nolocation.desc"
+		trigger = {
+			NOT = { exists = event_target:caffeine_survey }
+		}
+		allow = { hidden_trigger = { always = no } }
+	}
+	option = {
 		name = "caffeine.assist"
 		custom_tooltip = "caffeine.assist.desc"
 		trigger = {
@@ -59,6 +67,17 @@ fleet_event = {
 		hidden_effect = {
 			fleet_event = { id = folkcaffeine.1100 }
 		}
+	}
+	option = {
+		name = "caffeine.assist.nolocation"
+		custom_tooltip = "caffeine.explore.assist.desc"
+		trigger = {
+			NOR = {
+				exists = event_target:caffeine_research_planet
+				owner = { has_technology = "tech_databank_uplinks" }
+			}
+		}
+		allow = { hidden_trigger = { always = no } }
 	}
 	option = {
 		name = "caffeine.scuttle"

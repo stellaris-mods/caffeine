@@ -26,22 +26,13 @@ caffeine_find_researchplanet = {
 			if = {
 				limit = {
 					NOT = {
-						# Is there a science ship in orbit ?
-						solar_system = {
-							any_ship_in_system = {
+						ROOT.owner = {
+							any_owned_fleet = {
 								is_ship_class = shipclass_science_ship
-								exists = owner
-								owner = { is_same_value = root.owner } # is it ours lollers
-								exists = leader # Does it have a scientist
-								fleet = {
-									# Is in orbit of the planet
-									exists = orbit
-									orbit = {
-										is_same_value = prevprevprevprev
-									}
-									# And it's actually assisting!
-									has_fleet_order = assist_research_order
-								}
+								exists = leader
+								exists = orbit
+								orbit = { is_same_value = PREVPREV }
+								has_fleet_order = assist_research_order
 							}
 						}
 					}
@@ -50,7 +41,7 @@ caffeine_find_researchplanet = {
 					limit = {
 						has_any_science_lab = yes
 					}
-					root.owner = {
+					ROOT.owner = {
 						change_variable = {
 							which = CaffeineCount
 							value = 1 # +1
@@ -61,7 +52,7 @@ caffeine_find_researchplanet = {
 					limit = {
 						# Does this planet have more research than the
 						# previously highest one?
-						root.owner = {
+						ROOT.owner = {
 							check_variable = {
 								which = CaffeineCount
 								value > CaffeineHighest
@@ -69,7 +60,7 @@ caffeine_find_researchplanet = {
 						}
 					}
 					# Yes, it does, save it.
-					root.owner = {
+					ROOT.owner = {
 						set_variable = {
 							which = CaffeineHighest
 							value = CaffeineCount
@@ -78,7 +69,7 @@ caffeine_find_researchplanet = {
 					save_event_target_as = caffeine_research_planet
 				}
 				# Reset research building counter
-				root.owner = {
+				ROOT.owner = {
 					set_variable = {
 						which = CaffeineCount
 						value = 0
@@ -94,13 +85,13 @@ caffeine_find_researchplanet = {
 
 caffeine_find_surveylocation = {
 	# First check if there is a non-surveyed system inside our borders
-	prev = { # fleet
+	ROOT = { # fleet
 		closest_system = {
 			limit = {
-				is_within_borders_of = from
+				is_within_borders_of = FROM
 				any_planet = {
 					is_surveyed = {
-						who = from
+						who = FROM
 						status = no
 					}
 				}
@@ -109,17 +100,17 @@ caffeine_find_surveylocation = {
 				NOT = {
 					any_ship_in_system = {
 						exists = owner
-						owner = { is_hostile = from }
+						owner = { is_hostile = FROM }
 					}
 				}
 				# Anyone doing a survey here already maybe?
 				NOT = {
 					any_ship_in_system = {
 						exists = owner
-						owner = { is_same_value = from }
+						owner = { is_same_value = FROM }
 						is_ship_class = shipclass_science_ship
 						fleet = {
-							or = {
+							OR = {
 								has_fleet_order = survey_planet_order
 								has_fleet_order = auto_explore_order
 								has_fleet_order = move_to_system_point_order
@@ -139,25 +130,23 @@ caffeine_find_surveylocation = {
 	closest_system = {
 		limit = {
 			# Not surveyed
-			any_planet = { is_surveyed = { who = from status = no } }
+			any_planet = { is_surveyed = { who = FROM status = no } }
 			# Check if we can even enter
 			# XXX I dont think this check works.
-			has_access_fleet = from
-			# Not a hostile system
-			NOT = { has_star_flag = hostile_system }
+			has_access_fleet = FROM
 			# No hostile ship in system
 			NOT = {
 				any_ship_in_system = {
 					exists = owner
-					owner = { is_hostile = from }
+					owner = { is_hostile = FROM }
 				}
 			}
 			NOT = {
 				any_country = {
-					has_closed_borders = from
-					prev = {
+					has_closed_borders = FROM
+					PREV = {
 						any_planet = {
-							is_inside_border = prevprev
+							is_inside_border = PREVPREV
 						}
 					}
 				}
@@ -166,10 +155,10 @@ caffeine_find_surveylocation = {
 			NOT = {
 				any_ship_in_system = {
 					exists = owner
-					owner = { is_same_value = from }
+					owner = { is_same_value = FROM }
 					is_ship_class = shipclass_science_ship
 					fleet = {
-						or = {
+						OR = {
 							has_fleet_order = survey_planet_order
 							has_fleet_order = auto_explore_order
 							has_fleet_order = move_to_system_point_order

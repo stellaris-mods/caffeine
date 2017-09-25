@@ -1,5 +1,5 @@
 has_any_science_lab = {
-	or = {
+	OR = {
 		has_building = "building_basic_science_lab_1"
 		has_building = "building_physics_lab_1"
 		has_building = "building_physics_lab_2"

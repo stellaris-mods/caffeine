@@ -6,9 +6,8 @@ fleet_event = {
 	title = "caffeine.1.title"
 	desc = "caffeine.1.desc"
 	picture = GFX_evt_caffeine_sleeping
-
 	is_triggered_only = yes
-	location = this
+	location = THIS
 
 	immediate = {
 		owner = {
@@ -25,11 +24,7 @@ fleet_event = {
 	}
 
 	# All buttons need to clear
-	after = {
-		owner = {
-			remove_country_flag = "has_caffeine_open"
-		}
-	}
+	after = { owner = { remove_country_flag = "has_caffeine_open" } }
 
 	option = {
 		name = "caffeine.justclose"
@@ -69,8 +64,8 @@ fleet_event = {
 		name = "caffeine.scuttle"
 		custom_tooltip = "caffeine.scuttle.desc"
 		hidden_effect = {
-			leader = { unassign_leader = this }
-			destroy_fleet = this
+			leader = { unassign_leader = THIS }
+			destroy_fleet = THIS
 		}
 	}
 	option = {
@@ -230,7 +225,7 @@ ship_event = {
 				else = {
 					remove_fleet_flag = "caffeine_enroute"
 					remove_fleet_flag = "folk_auto_warned"
-					clear_fleet_actions = this
+					clear_fleet_actions = THIS
 				}
 			}
 		}
@@ -247,7 +242,7 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		is_country_type = default
+		is_country_type = "default"
 		is_ai = no
 		NOR = {
 			has_country_flag = "has_caffeine_open"
@@ -276,7 +271,7 @@ country_event = {
 						any_ship_in_system = {
 							exists = owner
 							owner = {
-								is_hostile = root
+								is_hostile = ROOT
 							}
 						}
 					}
@@ -320,9 +315,9 @@ event = {
 		every_country = {
 			limit = {
 				is_ai = no
-				is_country_type = default
+				is_country_type = "default"
 			}
-			remove_country_flag = caffeine_ignorecountry
+			remove_country_flag = "caffeine_ignorecountry"
 		}
 	}
 	option = {

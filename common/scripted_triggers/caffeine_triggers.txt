@@ -16,3 +16,34 @@ has_any_science_lab = {
 		# XXX Add in buildings from NSC and other common ones
 	}
 }
+
+caffeine_valid_survey_location = {
+	OR = {
+		is_surveyed = { who = FROM status = no }
+		any_planet = { is_surveyed = { who = FROM status = no } }
+	}
+	# No hostile ship in system
+	NOT = {
+		any_ship_in_system = {
+			exists = owner
+			owner = { is_hostile = FROM }
+		}
+	}
+	has_access_fleet = FROM
+	# Anyone doing a survey here already maybe?
+	NOT = {
+		any_ship_in_system = {
+			exists = owner
+			owner = { is_same_value = FROM }
+			is_ship_class = shipclass_science_ship
+			exists = leader
+			fleet = {
+				OR = {
+					has_fleet_order = survey_planet_order
+					has_fleet_order = auto_explore_order
+					has_fleet_order = move_to_system_point_order
+				}
+			}
+		}
+	}
+}

@@ -1,32 +1,16 @@
 # From country scope
 # XXX We "simply" count the number of research buildings
 caffeine_find_researchplanet = {
-	set_variable = {
-		which = CaffeineCount
-		value = 0
-	}
-	set_variable = {
-		which = CaffeineHighest
-		value = 0
-	}
-	every_owned_planet = {
-		set_planet_flag = "caffeine_unchecked"
-	}
-
+	ROOT = { set_variable = { which = "CaffeineHighest" value = 0 } }
+	every_owned_planet = { set_planet_flag = "caffeine_unchecked" }
 	while = {
-		limit = {
-			any_owned_planet {
-				has_planet_flag = "caffeine_unchecked"
-			}
-		}
+		limit = { any_owned_planet { has_planet_flag = "caffeine_unchecked" } }
 		random_owned_planet = {
-			limit = {
-				has_planet_flag = "caffeine_unchecked"
-			}
+			limit = { has_planet_flag = "caffeine_unchecked" }
 			if = {
 				limit = {
-					NOT = {
-						ROOT.owner = {
+					PREV = {
+						NOT = {
 							any_owned_fleet = {
 								is_ship_class = shipclass_science_ship
 								exists = leader
@@ -37,13 +21,19 @@ caffeine_find_researchplanet = {
 						}
 					}
 				}
-				every_tile = {
-					limit = {
-						has_any_science_lab = yes
+				# Reset research building counter
+				ROOT = {
+					set_variable = {
+						which = "CaffeineCount"
+						value = 0
 					}
-					ROOT.owner = {
+				}
+				# Count buildings with science labs
+				every_tile = {
+					limit = { has_any_science_lab = yes }
+					ROOT = {
 						change_variable = {
-							which = CaffeineCount
+							which = "CaffeineCount"
 							value = 1 # +1
 						}
 					}
@@ -52,28 +42,21 @@ caffeine_find_researchplanet = {
 					limit = {
 						# Does this planet have more research than the
 						# previously highest one?
-						ROOT.owner = {
+						ROOT = {
 							check_variable = {
-								which = CaffeineCount
-								value > CaffeineHighest
+								which = "CaffeineCount"
+								value > "CaffeineHighest"
 							}
 						}
 					}
 					# Yes, it does, save it.
-					ROOT.owner = {
+					ROOT = {
 						set_variable = {
-							which = CaffeineHighest
-							value = CaffeineCount
+							which = "CaffeineHighest"
+							value = "CaffeineCount"
 						}
 					}
 					save_event_target_as = caffeine_research_planet
-				}
-				# Reset research building counter
-				ROOT.owner = {
-					set_variable = {
-						which = CaffeineCount
-						value = 0
-					}
 				}
 			}
 			# Make sure we dont loop forever
@@ -89,85 +72,26 @@ caffeine_find_surveylocation = {
 		closest_system = {
 			limit = {
 				is_within_borders_of = FROM
-				any_planet = {
-					is_surveyed = {
-						who = FROM
-						status = no
-					}
-				}
-				NOT = { has_star_flag = hostile_system }
-				# No hostile ship in system
-				NOT = {
-					any_ship_in_system = {
-						exists = owner
-						owner = { is_hostile = FROM }
-					}
-				}
-				# Anyone doing a survey here already maybe?
-				NOT = {
-					any_ship_in_system = {
-						exists = owner
-						owner = { is_same_value = FROM }
-						is_ship_class = shipclass_science_ship
-						fleet = {
-							OR = {
-								has_fleet_order = survey_planet_order
-								has_fleet_order = auto_explore_order
-								has_fleet_order = move_to_system_point_order
-							}
-						}
-					}
-				}
+				caffeine_valid_survey_location = yes
 			}
 			save_event_target_as = caffeine_survey
 		}
 	}
 
 	if = {
-	limit = { NOT = { exists = event_target:caffeine_survey } }
-	# Find the one closest to our capital
-	capital_scope = {
-	closest_system = {
-		limit = {
-			# Not surveyed
-			any_planet = { is_surveyed = { who = FROM status = no } }
-			# Check if we can even enter
-			# XXX I dont think this check works.
-			has_access_fleet = FROM
-			# No hostile ship in system
-			NOT = {
-				any_ship_in_system = {
-					exists = owner
-					owner = { is_hostile = FROM }
-				}
-			}
-			NOT = {
-				any_country = {
-					has_closed_borders = FROM
-					PREV = {
-						any_planet = {
-							is_inside_border = PREVPREV
-						}
+		limit = { NOT = { exists = event_target:caffeine_survey } }
+		# Find the one closest to our capital
+		capital_scope = {
+			closest_system = {
+				limit = {
+					OR = { # Cant NOR this because it wouldn't stop at the first check then
+						NOT = { exists = space_owner }
+						space_owner = { NOT = { has_closed_borders = FROM } }
 					}
+					caffeine_valid_survey_location = yes
 				}
-			}
-			# Anyone doing a survey here already maybe?
-			NOT = {
-				any_ship_in_system = {
-					exists = owner
-					owner = { is_same_value = FROM }
-					is_ship_class = shipclass_science_ship
-					fleet = {
-						OR = {
-							has_fleet_order = survey_planet_order
-							has_fleet_order = auto_explore_order
-							has_fleet_order = move_to_system_point_order
-						}
-					}
-				}
+				save_event_target_as = caffeine_survey
 			}
 		}
-		save_event_target_as = caffeine_survey
 	}
-	} }
 }

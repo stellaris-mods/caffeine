@@ -15,12 +15,12 @@ caffeine.justclose.desc: "Closes the window immediately and ignores the status o
 caffeine.explore: "§BSurvey §Y[caffeine_survey.GetName]§!"
 caffeine.explore.desc: "Move to the planet or system nearest our capital that is accessible, without hostiles (as far as we know), and not surveyed."
 caffeine.explore.nolocation: "§BSurvey§!"
-caffeine.explore.nolocation.desc: "Failed to find a suitable survey target."
+caffeine.explore.nolocation.desc: "The addon failed to find a suitable/accessible location to survey, or you've surveyed the whole galaxy."
 
 caffeine.assist: "§BAssist Research at §Y[caffeine_research_planet.GetName]§!"
 caffeine.assist.desc: "Move to [caffeine_research_planet.GetName] (the planet with the most research laboratories, and no existing science vessel assisting), and notify me again."
 caffeine.assist.nolocation: "§BAssist Research§!"
-caffeine.assist.nolocation.desc: "Failed to find a suitable location for Assist Research."
+caffeine.assist.nolocation.desc: "Either you don't have §G$tech_databank_uplinks$§!, or the addon failed to find a suitable (planet with research laboratories, and no existing science vessel assisting) planet to assist."
 
 caffeine.scuttle: "§PScuttle the ship§!"
 caffeine.scuttle.desc: "Immediately disembark the Captain and crew, send §G[This.GetLeaderName]§! home, and demolish the ship."

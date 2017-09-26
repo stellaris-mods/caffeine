@@ -28,6 +28,7 @@ fleet_event = {
 
 	option = {
 		name = "caffeine.justclose"
+		default_hide_option = yes
 		custom_tooltip = "caffeine.justclose.desc"
 		hidden_effect = {
 			set_timed_fleet_flag = {
@@ -59,10 +60,7 @@ fleet_event = {
 		custom_tooltip = "caffeine.assist.desc"
 		trigger = {
 			exists = event_target:caffeine_research_planet
-			owner = {
-				# Can we even assist lulz
-				has_technology = "tech_databank_uplinks"
-			}
+			owner = { has_technology = "tech_databank_uplinks" }
 		}
 		hidden_effect = {
 			fleet_event = { id = folkcaffeine.1100 }
@@ -70,7 +68,7 @@ fleet_event = {
 	}
 	option = {
 		name = "caffeine.assist.nolocation"
-		custom_tooltip = "caffeine.explore.assist.desc"
+		custom_tooltip = "caffeine.assist.nolocation.desc"
 		trigger = {
 			NOR = {
 				exists = event_target:caffeine_research_planet

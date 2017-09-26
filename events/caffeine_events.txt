@@ -70,7 +70,7 @@ fleet_event = {
 		name = "caffeine.assist.nolocation"
 		custom_tooltip = "caffeine.assist.nolocation.desc"
 		trigger = {
-			NOR = {
+			NOT = {
 				exists = event_target:caffeine_research_planet
 				owner = { has_technology = "tech_databank_uplinks" }
 			}

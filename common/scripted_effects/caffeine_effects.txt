@@ -15,7 +15,7 @@ caffeine_find_researchplanet = {
 								is_ship_class = shipclass_science_ship
 								exists = leader
 								exists = orbit
-								orbit = { is_same_value = PREVPREV }
+								orbit = { is_same_value = PREVPREVPREV }
 								has_fleet_order = assist_research_order
 							}
 						}

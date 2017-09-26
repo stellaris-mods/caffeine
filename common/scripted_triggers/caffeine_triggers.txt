@@ -13,7 +13,32 @@ has_any_science_lab = {
 		has_building = "building_engineering_facility_2"
 		has_building = "building_engineering_facility_3"
 		has_building = "building_engineering_facility_4"
-		# XXX Add in buildings from NSC and other common ones
+
+		# lulz amounts, these should count for 2
+		has_building = "building_ancient_archives"
+		has_building = "building_zanaam_obelisk"
+		has_building = "building_toy_factory"
+		has_building = "building_mutant_landfill"
+		has_building = "building_vault"
+		has_building = "building_particle_accelerator"
+		has_building = "building_akx_worm_2"
+		has_building = "building_akx_worm_3"
+		has_building = "building_singularity_core"
+
+		# Secondary
+		has_building = "building_clinic"
+		has_building = "building_institute"
+		has_building = "building_xeno_zoo"
+		has_building = "building_clone_vats"
+		has_building = "building_planetary_shield_generator"
+		has_building = "building_hospital"
+		has_building = "building_military_academy"
+		has_building = "building_vault_2"
+		has_building = "building_fe_xeno_zoo"
+		has_building = "building_war_factory"
+		has_building = "building_animal_evaluation_laboratory"
+		has_building = "building_spare_parts_depot"
+		has_building = "building_unit_assembly_plant"
 	}
 }
 

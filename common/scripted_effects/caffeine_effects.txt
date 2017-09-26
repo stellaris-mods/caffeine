@@ -1,8 +1,15 @@
 # From country scope
-# XXX We "simply" count the number of research buildings
 caffeine_find_researchplanet = {
 	ROOT = { set_variable = { which = "CaffeineHighest" value = 0 } }
-	every_owned_planet = { set_planet_flag = "caffeine_unchecked" }
+	every_owned_planet = {
+		limit = {
+			is_terraforming = no
+			is_occupied_flag = no
+			has_ground_combat = no
+			controller = { is_same_value = PREVPREV }
+		}
+		set_planet_flag = "caffeine_unchecked"
+	}
 	while = {
 		limit = { any_owned_planet { has_planet_flag = "caffeine_unchecked" } }
 		random_owned_planet = {

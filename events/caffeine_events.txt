@@ -283,6 +283,7 @@ country_event = {
 				is_disabled = no
 				is_in_combat = no
 				is_being_repaired = no
+				is_fleet_idle = yes
 				NOT = {
 					solar_system = {
 						any_ship_in_system = {

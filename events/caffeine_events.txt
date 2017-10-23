@@ -1,5 +1,8 @@
 namespace = folkcaffeine
 
+# XXX add option to go to nearest anomaly?
+# XXX clarify burn-tooltip, that it only applies to the player and not others in MP
+
 fleet_event = {
 	id = folkcaffeine.1001
 	# TODO Randomize these

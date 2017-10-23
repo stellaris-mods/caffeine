@@ -8,4 +8,5 @@ return {
 	remote_file_id = 790840932,
 	readme = "readme.md",
 	steambb = "steam.bbcode",
+	originalUploader = "folk",
 }
